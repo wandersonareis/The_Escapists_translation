@@ -1,17 +1,26 @@
 {
-  "name": "tsv",
+  "name": "the_escapists_translation_parser",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Script feito para transferir a tradução deste jogo na versão Nintendo Switch para a versão Android",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "WandersonAReis",
+    "url": "https://github.com/wandersonareis"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wandersonareis/The_Escapists_translation"
+  },
   "license": "ISC",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
-    "csv": "^6.2.5",
     "csv-parse": "^5.3.3",
     "csv-stringify": "^6.2.3"
   }
