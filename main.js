@@ -27,22 +27,40 @@ const processFile = async (file) => {
   return records;
 };
 
+const writeFile = (arr, file) => {
+  stringify(
+    arr,
+    {
+      header: true,
+      delimiter: "\t",
+    },
+    function (err, output) {
+      if (err) console.log(err.message);
+      fs.writeFileSync(file, output);
+    }
+  );
+};
 (async () => {
-  const recordsNsw = await processFile("./Nitendo switch/LocalizationNew-CAB-a8759935627de4ed3ac45e93d401a6b3-8667144087232685053.txt"
+  const recordsNsw = await processFile(
+    "./Nitendo switch/LocalizationNew-CAB-a8759935627de4ed3ac45e93d401a6b3-8667144087232685053.txt"
   );
   const recordsAndroid = await processFile("./Android/LocalizationNew.txt");
 
+  let errors = [];
   recordsAndroid.map((recordAndroid, index) => {
     const recordNsw = recordsNsw.find(
       (record) => record["Text ID"] === recordAndroid["Text ID"]
     );
-    if (!recordsAndroid[index]['Text ID']) {
+    if (!recordsAndroid[index]["Text ID"]) {
       return;
     }
     if (!recordNsw) {
+      const id = recordAndroid["Text ID"];
+      const value = recordAndroid.English;
       console.log(
-        `O diálogo no texto Android com Id \"${recordAndroid.Key_1}\" e valor \"${recordAndroid.Key_2}\" não tem equivalente na tradução!`
+        `O diálogo no texto Android com Id \"${id}\" e valor \"${value}\" não tem equivalente na tradução!`
       );
+      errors.push({ "Text ID": id, English: value });
       return;
     }
     if (recordAndroid.English === recordNsw.English) {
@@ -50,16 +68,9 @@ const processFile = async (file) => {
     }
     recordsAndroid[index].English = recordNsw.English;
   });
+  writeFile(recordsAndroid, "./android_translation.csv");
 
-  stringify(
-    recordsAndroid,
-    {
-      header: false,
-      delimiter: "\t",
-    },
-    function (err, output) {
-      if (err) console.log(err.message);
-      fs.writeFileSync("./someData.csv", output);
-    }
-  );
+  if (errors.length > 0) {
+    writeFile(errors, "./erros.csv");
+  }
 })();

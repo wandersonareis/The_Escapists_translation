@@ -128,5 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+#
 Android
 Nitendo switch
+The_Escapists_translation.rar
+*.csv
